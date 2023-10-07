@@ -5,7 +5,11 @@ import 'package:firewatch/Pages/wildfire_information_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
-initialRoute: '/GeneralInfo',
+
+  theme: ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF851229))
+  ),
 
   routes: {
     '/': (context) => LoginScreen(),
