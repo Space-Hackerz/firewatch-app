@@ -6,7 +6,7 @@ class GeneralInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //App bargit
+      //App bar
       appBar: AppBar(
         title: const Text("General Info",
           style: TextStyle(
