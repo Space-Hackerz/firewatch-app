@@ -30,8 +30,9 @@ class LoginScreen extends StatelessWidget {
           SizedBox(height: 40,),
 
           //Form information
-          Padding(padding: EdgeInsets.all(20),
-          child: Container(
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Container(
             decoration: const BoxDecoration(
               //TODO change colour of box if needed
               color: Colors.white24,
@@ -42,9 +43,16 @@ class LoginScreen extends StatelessWidget {
                   offset: Offset(0,-3),
                 ),
               ]
+
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                children: [],
 
 
+              ),
+            ),
             ),
           ),
         ],
