@@ -11,6 +11,7 @@ void main() => runApp(MaterialApp(
         seedColor: const Color(0xFF851229))
   ),
 
+  initialRoute: '/GeneralInfo',
   routes: {
     '/': (context) => LoginScreen(),
     '/WildfireInfo': (context) => WildfireInformation(),
