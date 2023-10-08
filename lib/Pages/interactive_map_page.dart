@@ -1,10 +1,12 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:firewatch/utils/Album.dart';
 class InteractiveMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,8 @@ class MapSampleState extends State<MapSample> {
   TextEditingController _originController = TextEditingController();
   String? _currentAddress;
   Position? _currentPosition;
-
   Set<Marker> _markers = Set<Marker>();
+  List _fire_data = [];
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(0, 0),
@@ -46,6 +48,14 @@ class MapSampleState extends State<MapSample> {
           position: point,
         ),
       );
+    });
+  }
+  // Fetch content from the json file
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/sample.json');
+    final data = await json.decode(response);
+    setState(() {
+      _fire_data = data["fire_data"];
     });
   }
   Future<String?> getAddressFromCoordinates(double latitude, double longitude) async {
@@ -124,6 +134,39 @@ class MapSampleState extends State<MapSample> {
                 });
               },
             ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _originController,
+                      decoration: InputDecoration(hintText: ' Location'),
+                      onChanged: (value) {
+                        print(value);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  LatLng coords = await getCoordinatesFromAddress(_originController.value.text);
+                  print(coords);
+                  _goToPlace(coords.latitude, coords.longitude);
+                },
+                icon: Icon(Icons.search),
+              ),
+              IconButton(
+                onPressed: () async {
+                  readJson();
+                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                      content: Text("_fire_data[0][\"acq_date\"]:" + _fire_data[0]["acq_date"])));
+                },
+                icon: Icon(Icons.question_mark),
+              ),
+            ],
           ),
         ],
       ),
