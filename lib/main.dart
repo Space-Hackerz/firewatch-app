@@ -8,10 +8,11 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(
 
   theme: ThemeData(
-    primaryColor: const Color(0xFF851229),
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF851229))
   ),
 
-  initialRoute: '/WildfireInfo',
+  initialRoute: '/InterMap',
   routes: {
     '/': (context) => LoginScreen(),
     '/WildfireInfo': (context) => WildfireInformation(),
