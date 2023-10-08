@@ -29,7 +29,6 @@ class _WildfireReportState extends State<WildfireReport> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF851229),
           title: const Text("Report wildfire",
             style: TextStyle(
               color: Color(0xFFd0d2d6),

@@ -12,7 +12,6 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       //App bar
       appBar: AppBar(
-        backgroundColor: Color(0xFF851229),
         title: const Text("Firewatch",
           style: TextStyle(
             color: Color(0xFFd0d2d6),
