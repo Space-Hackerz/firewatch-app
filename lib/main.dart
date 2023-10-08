@@ -12,7 +12,7 @@ void main() => runApp(MaterialApp(
         seedColor: const Color(0xFF851229))
   ),
 
-  initialRoute: '/WildfireRep',
+  initialRoute: '/InterMap',
   routes: {
     '/': (context) => LoginScreen(),
     '/WildfireInfo': (context) => WildfireInformation(),
