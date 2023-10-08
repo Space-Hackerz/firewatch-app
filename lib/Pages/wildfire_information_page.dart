@@ -16,7 +16,6 @@ class WildfireInformation extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF851229),
         title: const Text("Wildfire Information",
           style: TextStyle(
             color: Color(0xFFd0d2d6),
@@ -63,17 +62,21 @@ class WildfireInformation extends StatelessWidget {
             ListView.builder(
               itemCount: locations.length,
               shrinkWrap: true, itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                   padding: EdgeInsets.all(15),
-                    child: Text(locations[index],
-                      style: TextStyle(
-                      fontSize: 15,
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                     padding: EdgeInsets.all(15),
+                      child: Text(locations[index],
+                        style: TextStyle(
+                        fontSize: 15,
+                          )
                         )
-                      )
-              );
+              ),
+                );
             },
             )
 
