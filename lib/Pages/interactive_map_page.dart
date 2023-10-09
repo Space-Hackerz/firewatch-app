@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:firewatch/utils/Album.dart';
 class InteractiveMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,13 +38,50 @@ class MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     _getCurrentPosition();
+    readJson();
   }
   void _setMarker(LatLng point) {
     setState(() {
       _markers.add(
         Marker(
           markerId: MarkerId('marker'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
           position: point,
+          infoWindow: InfoWindow(
+            title: 'Your current location',
+            snippet:
+            "Latitude: " + point.latitude.toString() +
+                " Longitude: " + point.longitude.toString(),
+          ),
+        ),
+      );
+    });
+  }
+  void _addFireMarker(String id, double lat, double lon, String confidence) {
+    double fireHue = 0;
+    switch(confidence){
+      case "l":
+        fireHue = BitmapDescriptor.hueYellow;
+        break;
+      case "n":
+        fireHue = BitmapDescriptor.hueOrange;
+        break;
+      case "h":
+        fireHue = BitmapDescriptor.hueRed;
+        break;
+    }
+    setState(() {
+      _markers.add(
+        Marker(
+          markerId: MarkerId(id),
+          icon: BitmapDescriptor.defaultMarkerWithHue(fireHue),
+          position: LatLng(lat,lon),
+          infoWindow: InfoWindow(
+            title: 'My Little Fire :)',
+            snippet:
+            "Latitude: " + lat.toString() +
+              "Longitude: " + lon.toString(),
+          ),
         ),
       );
     });
@@ -121,7 +157,7 @@ class MapSampleState extends State<MapSample> {
           ),
           Expanded(
             child: GoogleMap(
-              mapType: MapType.normal,
+              mapType: MapType.satellite,
               markers: _markers,
               initialCameraPosition: _kGooglePlex,
               onMapCreated: (GoogleMapController controller) {
@@ -131,6 +167,7 @@ class MapSampleState extends State<MapSample> {
                 setState(() {
                   print(point);
                   _setMarker(point);
+                  //_addCustomWindowMarker(point);
                 });
               },
             ),
@@ -165,6 +202,31 @@ class MapSampleState extends State<MapSample> {
                       content: Text("_fire_data[0][\"acq_date\"]:" + _fire_data[0]["acq_date"])));
                 },
                 icon: Icon(Icons.question_mark),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await readJson();
+                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                    content: Text("Going to _fire_data[0]'s lat+long coordinates")));
+                  var lat = _fire_data[0]["latitude"];
+                  var lon = _fire_data[0]["longitude"];
+                  _goToPlace(lat,lon);
+                  },
+                icon: Icon(Icons.fireplace),
+              ),
+              IconButton(
+                onPressed: () async {
+                  readJson();
+                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                      content: Text("Marking Locations of All Fires in JSon data: ")));
+                  _fire_data.forEach((element) {
+                    var lat = element["latitude"];
+                    var lon = element["longitude"];
+                    var confidence = element["confidence"];
+                    _addFireMarker(lat.toString()+"_"+lon.toString(), lat, lon, confidence);
+                  });
+                },
+                icon: Icon(Icons.fire_extinguisher),
               ),
             ],
           ),
