@@ -153,6 +153,20 @@ class MapSampleState extends State<MapSample> {
                 },
                 icon: Icon(Icons.my_location),
               ),
+              IconButton(
+                onPressed: () async {
+                  readJson();
+                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                      content: Text("Marking Locations of All Fires in JSon data: ")));
+                  _fire_data.forEach((element) {
+                    var lat = element["latitude"];
+                    var lon = element["longitude"];
+                    var confidence = element["confidence"];
+                    _addFireMarker(lat.toString()+"_"+lon.toString(), lat, lon, confidence);
+                  });
+                },
+                icon: Icon(Icons.fire_extinguisher),
+              ),
             ],
           ),
           Expanded(
@@ -174,60 +188,6 @@ class MapSampleState extends State<MapSample> {
           ),
           Row(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _originController,
-                      decoration: InputDecoration(hintText: ' Location'),
-                      onChanged: (value) {
-                        print(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  LatLng coords = await getCoordinatesFromAddress(_originController.value.text);
-                  print(coords);
-                  _goToPlace(coords.latitude, coords.longitude);
-                },
-                icon: Icon(Icons.search),
-              ),
-              IconButton(
-                onPressed: () async {
-                  readJson();
-                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                      content: Text("_fire_data[0][\"acq_date\"]:" + _fire_data[0]["acq_date"])));
-                },
-                icon: Icon(Icons.question_mark),
-              ),
-              IconButton(
-                onPressed: () async {
-                  await readJson();
-                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                    content: Text("Going to _fire_data[0]'s lat+long coordinates")));
-                  var lat = _fire_data[0]["latitude"];
-                  var lon = _fire_data[0]["longitude"];
-                  _goToPlace(lat,lon);
-                  },
-                icon: Icon(Icons.fireplace),
-              ),
-              IconButton(
-                onPressed: () async {
-                  readJson();
-                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                      content: Text("Marking Locations of All Fires in JSon data: ")));
-                  _fire_data.forEach((element) {
-                    var lat = element["latitude"];
-                    var lon = element["longitude"];
-                    var confidence = element["confidence"];
-                    _addFireMarker(lat.toString()+"_"+lon.toString(), lat, lon, confidence);
-                  });
-                },
-                icon: Icon(Icons.fire_extinguisher),
-              ),
             ],
           ),
         ],
