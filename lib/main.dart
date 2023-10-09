@@ -6,12 +6,16 @@ import 'package:firewatch/Pages/report_wildfire_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
+  debugShowCheckedModeBanner: false,
 
   theme: ThemeData(
-    primaryColor: const Color(0xFF851229),
+      primaryColor: const Color(0xFF851229),
+      appBarTheme: AppBarTheme(
+        backgroundColor: const Color(0xFF851229),
+      )
   ),
 
-  initialRoute: '/WildfireInfo',
+  initialRoute: '/InterMap',
   routes: {
     '/': (context) => LoginScreen(),
     '/WildfireInfo': (context) => WildfireInformation(),
